@@ -1,0 +1,15 @@
+package util;
+import java.time.LocalDate;
+import java.util.*;
+
+public interface Validador {
+	
+	public default boolean validarData(Date data1, Date data2) {
+		if (data1.before(data2)) {
+			return false;
+		}
+		//Ver outras validacoes
+		return true;
+	}
+	
+}

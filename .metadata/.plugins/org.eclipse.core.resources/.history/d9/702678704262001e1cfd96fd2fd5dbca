@@ -1,0 +1,51 @@
+package pessoa;
+import java.util.Date;
+
+public class Socio extends Pessoa {
+	private String endereco;
+	private String email;
+	private Dependente dependente;
+	
+	public Socio() {}
+	
+	public Socio(String nome, Date dataNascimento, String endereco, String email, Dependente dependente) {
+		super(nome, dataNascimento);
+		this.endereco = endereco;
+		this.email = email;
+		this.dependente = dependente;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public Dependente getDependente() {
+		return dependente;
+	}
+
+	public void setDependente(Dependente dependente) {
+		this.dependente = dependente;
+	}
+
+	@Override
+	public String toString() {
+		return 	"== Socio ==" +
+				super.toString() + 
+				"\nEndereco: " + endereco + 
+				"\nEmail: " + email +
+				"\n" + (dependente == null ? "Dependente nao informado" : dependente.toString());
+	}
+	
+}

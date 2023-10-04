@@ -1,0 +1,38 @@
+package pessoa;
+
+import java.util.Date;
+
+public class Socio extends Pessoa {
+	private String endereco;
+	private String email;
+	
+	public Socio() {}
+	
+	public Socio(String nome, Date dataNascimento, String endereco, String email) {
+		super(nome, dataNascimento);
+		this.endereco = endereco;
+		this.email = email;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	@Override
+	public String toString() {
+		return "Socio [endereco=" + endereco + ", email=" + email + "]";
+	}
+	
+}

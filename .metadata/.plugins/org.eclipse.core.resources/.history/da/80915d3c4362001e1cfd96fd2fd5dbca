@@ -1,0 +1,26 @@
+package locacoes;
+import java.util.*;
+import pessoa.*;
+
+public class Locacao {
+	private Date dataRetirada;
+	private Date dataDevolucao;
+	private double valor;
+	private String titulo;
+	private Socio socio;
+	
+	public Locacao() {}
+	
+	public Locacao(Date dataRetirada, Date dataDevolucao, double valor, String titulo, Socio socio) {
+		super();
+		this.dataRetirada = dataRetirada;
+		this.dataDevolucao = dataDevolucao;
+		this.valor = valor;
+		this.titulo = titulo;
+		this.socio = socio;
+	}
+	
+	
+	
+	
+}

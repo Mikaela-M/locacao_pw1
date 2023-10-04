@@ -1,0 +1,10 @@
+package util;
+import java.util.*;
+
+public interface Validador {
+	
+	public boolean validarData(Date data) {
+		
+	}
+	
+}
