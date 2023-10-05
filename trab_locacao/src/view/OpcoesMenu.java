@@ -1,7 +1,7 @@
-package util;
+package view;
 
-public enum Menu {
-
+public enum OpcoesMenu {
+	
 	CADASTRO(1, "Cadastrar Locação"),
 	PESQLOCVALOR(2, "Pesquisar Locação usando o valor"),
 	CADSOCIO(3, "Cadastrar Sócio (no banco de dados)"),
@@ -13,7 +13,7 @@ public enum Menu {
 	private final int opcao;
 	private final String descricaoMenu;
 	
-	private Menu(int opcao, String descricaoMenu) {
+	private OpcoesMenu(int opcao, String descricaoMenu) {
 		this.opcao = opcao;
 		this.descricaoMenu = descricaoMenu;
 	}
@@ -26,7 +26,7 @@ public enum Menu {
 	}
 	
 	public String getItem() {
-		return this.getOpcao() + this.getDescricaoMenu();
+		return this.getOpcao() + " - " + this.getDescricaoMenu();
 	}
 	
 }

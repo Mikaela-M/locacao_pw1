@@ -1,6 +1,8 @@
 package pessoa;
 import java.util.*;
 
+import dao.*;
+
 public class Socio extends Pessoa {
 	private String endereco;
 	private String email;
@@ -55,6 +57,10 @@ public class Socio extends Pessoa {
 				"\nEndereco: " + endereco + 
 				"\nEmail: " + email +
 				"\n" + aux;
+	}
+	
+	public int insert() {
+		return new SocioDAO().insert(this);
 	}
 	
 }

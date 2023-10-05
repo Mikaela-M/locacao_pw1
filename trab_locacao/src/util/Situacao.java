@@ -22,7 +22,7 @@ public enum Situacao {
 	}
 
 	public String getItem() {
-		return this.getId() + this.getDescricao();
+		return this.getId() + " - " + this.getDescricao();
 	}
 	
 }

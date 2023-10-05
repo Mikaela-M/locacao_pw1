@@ -2,6 +2,8 @@ package pessoa;
 
 import java.util.Date;
 
+import dao.*;
+
 public class Dependente extends Pessoa {
 
 	public Dependente() {}
@@ -16,4 +18,8 @@ public class Dependente extends Pessoa {
 				super.toString();
 	}
 
+	public int insert() {
+		return new DependenteDAO().insert(this);
+	}
+	
 }
