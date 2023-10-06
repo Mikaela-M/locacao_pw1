@@ -5,25 +5,50 @@ import java.util.*;
 
 import javax.swing.JOptionPane;
 
-import pessoa.Dependente;
+import generico.ListaGenerica;
 import pessoa.*;
+import locacoes.*;
+import util.*;
 
-public class Menu {
+public class Menu implements Validador {
 
 	public static void main(String[] args) {
 		try {
-			Socio socio;
 			TreeSet<Dependente> listaDependente = new TreeSet<Dependente>();
+			LinkedList<Locacao> listaLocacao = new LinkedList<Locacao>();
+			ListaGenerica<Locacao> listaGenLocacao = new ListaGenerica<Locacao>();
+			ListaGenerica<Dependente> listaGenDependente = new ListaGenerica<Dependente>();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Menu menu = new Menu();
 			
 			while (true) {
 				switch (montaMenu()) {
 				case 1:// Cadastrar Locacao
+					Date dataRetirada = sdf.parse(JOptionPane.showInputDialog("Informe a data de retirada (dd/MM/yyyy): "));
+					Date dataDevolucao = sdf.parse(JOptionPane.showInputDialog("Informe a data de devolucao (dd/MM/yyyy): "));
+					if (!menu.validarData(dataRetirada, dataDevolucao)) {
+						JOptionPane.showInputDialog("Data invalida. Tente novamente");
+						return;
+					}
+					double valor = Double.parseDouble(JOptionPane.showInputDialog("Informe o valor da locacao: "));
+					String titulo = JOptionPane.showInputDialog("Informe o titulo da locacao: ");
+					String nomeSocioLoc = JOptionPane.showInputDialog("Informe o nome do Socio que fara a locacao: ");
+					if () {
+						//busca socio, se não existir no bd faz a inclusao
+					}
+					int situacaoSelec = exibeSituacao();
+					Situacao situacaoRetornada;
+					for (Situacao situacao : Situacao.values()) {
+						if (situacao.getId() == situacaoSelec) {
+							situacaoRetornada = situacao;
+						}
+					}
+					listaGenLocacao.adicionar(new Locacao(dataRetirada, dataDevolucao, valor, titulo, situacaoRetornada));
 					break;
 				case 2:// Pesquisar Locacao por valor
 					break;	
 				case 3:// Cadastrar Socio
 					String nomeSocio = JOptionPane.showInputDialog("Informe o nome do Socio: ");
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 					Date dataNascSocio = sdf.parse(JOptionPane.showInputDialog("Informe a data de nascimento do Socio (dd/MM/yyyy): "));
 					String enderecoSocio = JOptionPane.showInputDialog("Informe o endereco do Socio: ");
 					String emailSocio = JOptionPane.showInputDialog("Informe o email do Socio: ");
@@ -34,18 +59,14 @@ public class Menu {
 							String nomeDepend = JOptionPane.showInputDialog("Informe o nome do Dependente: ");
 							Date dataNascDepend = sdf.parse(JOptionPane.showInputDialog("Informe a data de nascimento do Dependente (dd/MM/yyyy): "));
 							Dependente dependente = new Dependente(nomeDepend, dataNascDepend);
-							if (dependente.insert() == -1)
-								JOptionPane.showMessageDialog(null, "Erro ao inserir dependente!");
-							else
-								JOptionPane.showMessageDialog(null, "Dependente inserido com sucesso!");
-							listaDependente.add(dependente);
+							listaGenDependente.adicionar(dependente);
 							if(JOptionPane.showConfirmDialog(null, "Gostaria de inserir outro dependente?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
 								temDepend = false;
 							}
 						}
 					}
 					
-					socio = new Socio(nomeSocio, dataNascSocio, enderecoSocio, emailSocio, listaDependente);
+					Socio socio = new Socio(nomeSocio, dataNascSocio, enderecoSocio, emailSocio, listaDependente);
 					if(socio.insert() == - 1) 
 						JOptionPane.showMessageDialog(null, "Erro ao inserir Socio!");
 					else
@@ -55,6 +76,7 @@ public class Menu {
 				case 4:// Pesquisar Socio Nome
 					break;
 				case 5:// Listar Locacoes
+					listaGenLocacao.listaTodos();
 					break;
 				case 6:// Listar Socios
 					break;
@@ -68,7 +90,7 @@ public class Menu {
 			// TODO: handle exception
 		}		
 	}
-	
+
 	public static int montaMenu() {
 		String menu = "";
 		menu += ("Escolha uma das seguintes opcoes:\n");
@@ -76,5 +98,14 @@ public class Menu {
 			menu += value.getItem() + "\n";
 		}
 		return Integer.parseInt(JOptionPane.showInputDialog(menu));
+	}
+
+	public static int exibeSituacao() {
+		String situacoes = "";
+		situacoes += ("Escolha a situacao:\n");
+		for (Situacao value : Situacao.values()) {
+			situacoes += value.getItem() + "\n";
+		}
+		return Integer.parseInt(JOptionPane.showInputDialog(situacoes));
 	}
 }

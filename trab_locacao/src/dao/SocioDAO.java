@@ -26,10 +26,24 @@ public class SocioDAO implements GenericoDAO<Socio>{
 			}
 			return chavePrimaria;
 		}
-
+		//continuar daqui
 		@Override
-		public Socio selectElement(Socio elm) {
-			// TODO Auto-generated method stub
+		public Socio selectElement(String elm) {
+			try(Connection connection = new ConnectionFactory().getConnection();){
+				PreparedStatement stmt = 
+						connection.prepareStatement(SQLsSocio.FINDBYNOME.getSql());
+				stmt.setString(2, elm);
+				ResultSet rs = stmt.executeQuery();
+				while(rs.next()){
+					String nome = rs.getString("nomesocio");
+					Date dataNascimento = rs.getDate("datanascimentosocio");
+					String endereco = rs.getString("enderecosocio");
+					String email = rs.getString("emailsocio");
+					return new Socio(nome, dataNascimento, endereco, email);
+				}
+			}catch(SQLException e){
+				System.out.println("Exce��o find CpfDAO");
+			}
 			return null;
 		}
 

@@ -17,9 +17,5 @@ public class Dependente extends Pessoa {
 		return 	"== Dependente ==" +
 				super.toString();
 	}
-
-	public int insert() {
-		return new DependenteDAO().insert(this);
-	}
 	
 }

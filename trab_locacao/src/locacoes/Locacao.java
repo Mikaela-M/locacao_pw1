@@ -10,7 +10,6 @@ public class Locacao implements Comparable<Locacao> {
 	private String titulo;
 	private Socio socio;
 	private Situacao situacao;
-	private Validador validador;
 	
 	public Locacao() {}
 	
@@ -83,8 +82,8 @@ public class Locacao implements Comparable<Locacao> {
 			auxSocio = "Socio nao informado";
 		}
 		return "== Locacao ==" + 
-				"\nData Retirada: " + (!validador.validarData(dataRetirada, dataDevolucao)? "Data invalida" : dataRetirada) +
-				"\nData Devolucao: " + (!validador.validarData(dataRetirada, dataDevolucao)? "Data invalida" : dataDevolucao) + 
+				"\nData Retirada: " + dataRetirada +
+				"\nData Devolucao: " + dataDevolucao + 
 				"\nValor: " + valor + 
 				"\nTitulo: " + titulo +
 				"\n" + auxSocio + 
