@@ -40,7 +40,7 @@ public abstract class Pessoa implements Comparable<Pessoa>{
 
 	@Override
 	public String toString() {
-		return "Nome: " + nome +
+		return "\nNome: " + nome +
 				"\nData de Nascimento: " + dataNascimento + 
 				"\nTotal: " + total;
 	}

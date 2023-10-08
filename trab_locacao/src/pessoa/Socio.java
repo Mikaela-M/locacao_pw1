@@ -63,4 +63,12 @@ public class Socio extends Pessoa {
 		return new SocioDAO().insert(this);
 	}
 	
+	public Socio selectNome() {
+		return new SocioDAO().selectNome(this.getNome());
+	}
+	
+	public static List<Socio> selectAll(){
+		return SocioDAO.selectAll();
+	}
+	
 }

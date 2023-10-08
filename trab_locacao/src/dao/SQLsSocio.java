@@ -2,8 +2,8 @@ package dao;
 
 public enum SQLsSocio {
 	INSERTSOCIO("insert into socio(nomesocio, datanascimentosocio, enderecosocio, emailsocio) values (?, ?, ?, ?)"), 
-    LISTALLSOCIO("select * from socio"),
-    FINDBYNOME("select * from socio where nome like '?'");
+    SELECTALLSOCIO("select * from socio"),
+    SELECTNOME("select * from socio where nomesocio like ?");
       
     private final String sql;
 	SQLsSocio(String sql){

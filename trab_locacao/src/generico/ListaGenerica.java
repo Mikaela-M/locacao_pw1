@@ -2,6 +2,8 @@ package generico;
 
 import java.util.LinkedList;
 
+import locacoes.Locacao;
+
 public class ListaGenerica<E> implements ListaGenericaInterface<E>{
 	LinkedList<E> listaDados = new LinkedList<>();
 
@@ -22,8 +24,15 @@ public class ListaGenerica<E> implements ListaGenericaInterface<E>{
 	}
 
 	@Override
-	public boolean buscaElemento(E obj) {
-		return listaDados.contains(obj);
+	public E buscaElemento(E elm) {
+		//fazer aqui para pegar valor
+		Object obj = new Object();
+		for (E elemento : listaDados) {
+			if (condition) {
+				
+			}
+		}
+		return listaDados.;
 	}
 	
 }

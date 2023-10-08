@@ -2,7 +2,5 @@ package dao;
 
 public interface GenericoDAO<T> {
 		public int insert(T obj); 
-	    public T selectElement(String elm);
-	    public String listAll();
-	    
+	    public T selectNome(String elm);	    
 }

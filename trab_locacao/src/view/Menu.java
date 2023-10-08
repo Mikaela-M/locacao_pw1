@@ -20,6 +20,7 @@ public class Menu implements Validador {
 			ListaGenerica<Dependente> listaGenDependente = new ListaGenerica<Dependente>();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			Menu menu = new Menu();
+			Socio socio = null;
 			
 			while (true) {
 				switch (montaMenu()) {
@@ -27,25 +28,31 @@ public class Menu implements Validador {
 					Date dataRetirada = sdf.parse(JOptionPane.showInputDialog("Informe a data de retirada (dd/MM/yyyy): "));
 					Date dataDevolucao = sdf.parse(JOptionPane.showInputDialog("Informe a data de devolucao (dd/MM/yyyy): "));
 					if (!menu.validarData(dataRetirada, dataDevolucao)) {
-						JOptionPane.showInputDialog("Data invalida. Tente novamente");
+						JOptionPane.showInternalMessageDialog(null, "Data invalida. Tente novamente");
 						return;
 					}
 					double valor = Double.parseDouble(JOptionPane.showInputDialog("Informe o valor da locacao: "));
 					String titulo = JOptionPane.showInputDialog("Informe o titulo da locacao: ");
 					String nomeSocioLoc = JOptionPane.showInputDialog("Informe o nome do Socio que fara a locacao: ");
-					if () {
-						//busca socio, se não existir no bd faz a inclusao
+					socio = new Socio();
+					socio.setNome(nomeSocioLoc);
+					if (socio.selectNome() != null) {
+						JOptionPane.showMessageDialog(null, socio.selectNome());
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Socio nao cadastrado! Cadastre um socio no Menu para registrar uma locacao");
 					}
 					int situacaoSelec = exibeSituacao();
-					Situacao situacaoRetornada;
+					Situacao situacaoRetornada = null;
 					for (Situacao situacao : Situacao.values()) {
 						if (situacao.getId() == situacaoSelec) {
 							situacaoRetornada = situacao;
 						}
 					}
-					listaGenLocacao.adicionar(new Locacao(dataRetirada, dataDevolucao, valor, titulo, situacaoRetornada));
+					listaGenLocacao.adicionar(new Locacao(dataRetirada, dataDevolucao, valor, titulo, socio.selectNome(), situacaoRetornada));
 					break;
 				case 2:// Pesquisar Locacao por valor
+					
 					break;	
 				case 3:// Cadastrar Socio
 					String nomeSocio = JOptionPane.showInputDialog("Informe o nome do Socio: ");
@@ -66,7 +73,7 @@ public class Menu implements Validador {
 						}
 					}
 					
-					Socio socio = new Socio(nomeSocio, dataNascSocio, enderecoSocio, emailSocio, listaDependente);
+					socio = new Socio(nomeSocio, dataNascSocio, enderecoSocio, emailSocio, listaDependente);
 					if(socio.insert() == - 1) 
 						JOptionPane.showMessageDialog(null, "Erro ao inserir Socio!");
 					else
@@ -74,11 +81,29 @@ public class Menu implements Validador {
 					//ver como fazer insercao da FK idsocio na tab dependente
 					break;
 				case 4:// Pesquisar Socio Nome
+					socio = new Socio();
+					String nomeSocioPesq = JOptionPane.showInputDialog("Informe o nome do Socio que deseja pesquisar: ");
+					socio.setNome(nomeSocioPesq);
+					if (socio.selectNome() != null) {
+						JOptionPane.showMessageDialog(null, socio.selectNome());
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Socio nao encontrado");
+					}
 					break;
 				case 5:// Listar Locacoes
-					listaGenLocacao.listaTodos();
+					if (!listaGenLocacao.listaTodos().isEmpty()) {
+						JOptionPane.showMessageDialog(null, listaGenLocacao.listaTodos());
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Nao ha locacoes cadastradas. Insira na opcao 1 do Menu");
+					}
 					break;
 				case 6:// Listar Socios
+					socio = new Socio();
+					for(Socio socioSelect : socio.selectAll())
+						if(socioSelect != null)
+							JOptionPane.showMessageDialog(null, socioSelect.toString());
 					break;
 				case 7:// Sair
 					System.exit(0);

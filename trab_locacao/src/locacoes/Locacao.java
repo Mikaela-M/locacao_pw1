@@ -82,8 +82,8 @@ public class Locacao implements Comparable<Locacao> {
 			auxSocio = "Socio nao informado";
 		}
 		return "== Locacao ==" + 
-				"\nData Retirada: " + dataRetirada +
-				"\nData Devolucao: " + dataDevolucao + 
+				"\nData Retirada: " + dataRetirada.getTime() +
+				"\nData Devolucao: " + dataDevolucao.getTime() + 
 				"\nValor: " + valor + 
 				"\nTitulo: " + titulo +
 				"\n" + auxSocio + 
