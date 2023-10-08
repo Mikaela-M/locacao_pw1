@@ -3,5 +3,5 @@ package generico;
 public interface ListaGenericaInterface<E> {
 	public void adicionar(E obj);
 	public String listaTodos();
-	public E buscaElemento(E elm);
+	public boolean buscaElemento(E obj);
 }
