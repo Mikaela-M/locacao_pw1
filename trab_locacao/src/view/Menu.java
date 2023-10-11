@@ -18,6 +18,7 @@ public class Menu implements Validador {
 			//LinkedList<Locacao> listaLocacao = new LinkedList<Locacao>();
 			ListaGenerica<Locacao> listaGenLocacao = new ListaGenerica<Locacao>();
 			ListaGenerica<Dependente> listaGenDependente = new ListaGenerica<Dependente>();
+			ListaGenerica<Socio> listaSocioAux = new ListaGenerica<Socio>();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			Menu menu = new Menu();
 			Socio socio = null;
@@ -32,7 +33,7 @@ public class Menu implements Validador {
 					try {
 						if (!menu.validarData(dataRetirada, dataDevolucao)) {
 							JOptionPane.showInternalMessageDialog(null, "Data invalida. Tente novamente");
-							return;
+							break;
 						}
 					} catch (NullPointerException e) {
 						JOptionPane.showInternalMessageDialog(null, "Parâmetro nulo - validarData()");
@@ -42,12 +43,18 @@ public class Menu implements Validador {
 					String titulo = JOptionPane.showInputDialog("Informe o titulo da locacao: ");
 					String nomeSocioLoc = JOptionPane.showInputDialog("Informe o nome do Socio que fara a locacao: ");
 					socio = new Socio();
-					socio.setNome(nomeSocioLoc);
-					if (socio.selectNome() != null) {
-						JOptionPane.showMessageDialog(null, socio.selectNome());
-					} else {
+					boolean socioEncontrado = false;
+					for (Socio socioAux : listaSocioAux.listAll()) {
+						if (socioAux != null && socioAux.getNome().equalsIgnoreCase(nomeSocioLoc)) {
+							JOptionPane.showMessageDialog(null, socioAux.toString());
+							socio = socioAux;
+							socioEncontrado = true;
+						}
+					} 
+					if(!socioEncontrado) {
 						JOptionPane.showMessageDialog(null,
 								"Socio nao cadastrado! Cadastre um socio no Menu para registrar uma locacao");
+						break;
 					}
 					int situacaoSelec = exibeSituacao();
 					Situacao situacaoRetornada = null;
@@ -57,13 +64,13 @@ public class Menu implements Validador {
 						}
 					}
 					listaGenLocacao.adicionar(new Locacao(dataRetirada, dataDevolucao, valor, titulo,
-							socio.selectNome(), situacaoRetornada));
+							socio, situacaoRetornada));
 					break;
 				case 2:// Pesquisar Locacao por valor
 					double valorPesq = Double.parseDouble(JOptionPane.showInputDialog("Informe o valor (0.00) da locacao que deseja pesquisar: "));
 					locacao = new Locacao();
 					locacao.setValor(valorPesq);
-					if (listaGenLocacao.buscaElemento(locacao)) {
+					/*if (listaGenLocacao.buscaElemento(locacao)) {
 						System.out.println("locacao encontrada");
 						//recuperar o objeto
 						System.out.println(locacao.toString());
@@ -71,7 +78,7 @@ public class Menu implements Validador {
 					}
 					else {
 						System.out.println("locacao nao encontrada");
-					}
+					}*/
 					break;
 				case 3:// Cadastrar Socio
 					String nomeSocio = JOptionPane.showInputDialog("Informe o nome do Socio: ");
@@ -87,8 +94,7 @@ public class Menu implements Validador {
 							String nomeDepend = JOptionPane.showInputDialog("Informe o nome do Dependente: ");
 							Date dataNascDepend = sdf.parse(JOptionPane
 									.showInputDialog("Informe a data de nascimento do Dependente (dd/MM/yyyy): "));
-							Dependente dependente = new Dependente(nomeDepend, dataNascDepend);
-							listaGenDependente.adicionar(dependente);
+							listaDependente.add(new Dependente(nomeDepend, dataNascDepend));
 							if (JOptionPane.showConfirmDialog(null, "Gostaria de inserir outro dependente?", "",
 									JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
 								temDepend = false;
@@ -101,14 +107,14 @@ public class Menu implements Validador {
 						JOptionPane.showMessageDialog(null, "Erro ao inserir Socio!");
 					else
 						JOptionPane.showMessageDialog(null, "Socio inserido com sucesso!");
-					// ver como fazer insercao da FK idsocio na tab dependente
+						listaSocioAux.adicionar(socio);
 					break;
 				case 4:// Pesquisar Socio Nome
 					socio = new Socio();
 					String nomeSocioPesq = JOptionPane
 							.showInputDialog("Informe o nome do Socio que deseja pesquisar: ");
 					socio.setNome(nomeSocioPesq);
-					if (socio.selectNome() != null) {
+					if (socio.selectNome() != null) {					
 						JOptionPane.showMessageDialog(null, socio.selectNome());
 					} else {
 						JOptionPane.showMessageDialog(null, "Socio nao encontrado");
@@ -122,10 +128,11 @@ public class Menu implements Validador {
 					}
 					break;
 				case 6:// Listar Socios
-					socio = new Socio();
-					for (Socio socioSelect : socio.selectAll())
-						if (socioSelect != null)
+					//socio = new Socio();
+					for (Socio socioSelect : Socio.selectAll())
+						if (socioSelect != null) {
 							JOptionPane.showMessageDialog(null, socioSelect.toString());
+						}
 					break;
 				case 7:// Sair
 					System.exit(0);

@@ -1,6 +1,0 @@
-package util;
-
-public enum Situacao {
-	EMDIA(1, "Em dia"),
-	ATRASADA(2, "Atrasada")
-}

@@ -21,10 +21,10 @@
     <fullyQualifiedTypeName name="util.Situacao"/>
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="dao.SQLsSocio"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="dao.SocioDAO"/>
-    <fullyQualifiedTypeName name="pessoa.Socio"/>
     <fullyQualifiedTypeName name="java.lang.Object"/>
     <fullyQualifiedTypeName name="locacoes.Locacao"/>
     <fullyQualifiedTypeName name="java.util.LinkedList"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="pessoa.Socio"/>
 </qualifiedTypeNameHistroy>

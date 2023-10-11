@@ -2,7 +2,7 @@ package pessoa;
 
 import java.util.*;
 
-public abstract class Pessoa implements Comparable<Pessoa>{
+public abstract class Pessoa {
 	private String nome;
 	private Date dataNascimento;
 	private static int total = 0;
@@ -45,24 +45,4 @@ public abstract class Pessoa implements Comparable<Pessoa>{
 				"\nTotal: " + total;
 	}
 
-	@Override
-	public int compareTo(Pessoa o) {
-		return this.getNome().compareTo(o.getNome());
-	}
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(nome);
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pessoa other = (Pessoa) obj;
-		return Objects.equals(nome, other.nome);
-	}
 }
