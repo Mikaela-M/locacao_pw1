@@ -15,7 +15,6 @@ public class Menu implements Validador {
 
 	public static void main(String[] args) {
 		try {
-			// LinkedList<Locacao> listaLocacao = new LinkedList<Locacao>();
 			ListaGenerica<Locacao> listaGenLocacao = new ListaGenerica<Locacao>();
 			ListaGenerica<Socio> listaSocioAux = new ListaGenerica<Socio>();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -43,12 +42,17 @@ public class Menu implements Validador {
 					String nomeSocioLoc = JOptionPane.showInputDialog("Informe o nome do Socio que fara a locacao: ");
 					socio = new Socio();
 					boolean socioEncontrado = false;
-					for (Socio socioAux : listaSocioAux.listAll()) {
-						if (socioAux != null && socioAux.getNome().equalsIgnoreCase(nomeSocioLoc)) {
-							JOptionPane.showMessageDialog(null, socioAux.toString());
-							socio = socioAux;
-							socioEncontrado = true;
+					socio.setNome(nomeSocioLoc);
+					if (socio.selectNome() != null) {
+						socio = socio.selectNome();
+						for (Socio socioListaAux : listaSocioAux.listaTodosObj()) {
+							if (socio.getNome().equalsIgnoreCase(socioListaAux.getNome())
+									&& socioListaAux.getDependente() != null) {
+								socio = socioListaAux;
+							}
 						}
+						JOptionPane.showMessageDialog(null, socio.toString());
+						socioEncontrado = true;
 					}
 					if (!socioEncontrado) {
 						JOptionPane.showMessageDialog(null,
@@ -68,9 +72,9 @@ public class Menu implements Validador {
 				case 2:// Pesquisar Locacao por valor
 					double valorPesq = Double.parseDouble(
 							JOptionPane.showInputDialog("Informe o valor (0.00) da locacao que deseja pesquisar: "));
-					
+
 					boolean locacaoEncontrada = false;
-					for (Locacao locacaoBusca : listaGenLocacao.listAll()) {
+					for (Locacao locacaoBusca : listaGenLocacao.listaTodosObj()) {
 						if (locacaoBusca != null && locacaoBusca.getValor() == valorPesq) {
 							JOptionPane.showMessageDialog(null, locacaoBusca.toString());
 							locacaoEncontrada = true;
@@ -87,7 +91,7 @@ public class Menu implements Validador {
 							.parse(JOptionPane.showInputDialog("Informe a data de nascimento do Socio (dd/MM/yyyy): "));
 					String enderecoSocio = JOptionPane.showInputDialog("Informe o endereco do Socio: ");
 					String emailSocio = JOptionPane.showInputDialog("Informe o email do Socio: ");
-					
+
 					TreeSet<Dependente> listaDependente = new TreeSet<Dependente>();
 					if (JOptionPane.showConfirmDialog(null, "Socio tem dependente(s)?", "",
 							JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -118,8 +122,9 @@ public class Menu implements Validador {
 					socio.setNome(nomeSocioPesq);
 					if (socio.selectNome() != null) {
 						socio = socio.selectNome();
-						for (Socio socioListaAux : listaSocioAux.listAll()) {
-							if (socio.getNome().equalsIgnoreCase(socioListaAux.getNome()) && socioListaAux.getDependente() != null) {
+						for (Socio socioListaAux : listaSocioAux.listaTodosObj()) {
+							if (socio.getNome().equalsIgnoreCase(socioListaAux.getNome())
+									&& socioListaAux.getDependente() != null) {
 								socio = socioListaAux;
 							}
 						}
@@ -129,10 +134,11 @@ public class Menu implements Validador {
 					}
 					break;
 				case 5:// Listar Locacoes
-					if (!listaGenLocacao.listaTodos().isEmpty()) {
-						for (Locacao locacaoBusca : listaGenLocacao.listAll()) {
+					if (!listaGenLocacao.listaTodosStr().isEmpty()) {
+						Collections.sort(listaGenLocacao.listaTodosObj());
+						for (Locacao locacaoBusca : listaGenLocacao.listaTodosObj()) {
 							JOptionPane.showMessageDialog(null, locacaoBusca.toString());
-						}						
+						}
 					} else {
 						JOptionPane.showMessageDialog(null, "Nao ha locacoes cadastradas. Insira na opcao 1 do Menu");
 					}
@@ -141,8 +147,9 @@ public class Menu implements Validador {
 					boolean temSocio = false;
 					for (Socio socioSelect : Socio.selectAll())
 						if (socioSelect != null) {
-							for (Socio socioListaAux : listaSocioAux.listAll()) {
-								if (socioSelect.getNome().equalsIgnoreCase(socioListaAux.getNome()) && socioListaAux.getDependente() != null) {
+							for (Socio socioListaAux : listaSocioAux.listaTodosObj()) {
+								if (socioSelect.getNome().equalsIgnoreCase(socioListaAux.getNome())
+										&& socioListaAux.getDependente() != null) {
 									socioSelect.setDependente(socioListaAux.getDependente());
 								}
 							}
@@ -161,7 +168,7 @@ public class Menu implements Validador {
 					break;
 				}
 			}
-		} catch(NullPointerException e) {
+		} catch (NullPointerException e) {
 			System.out.println("Parametro nulo");
 		} catch (ParseException e) {
 			System.out.println("Nao foi possivel converter o valor para uma string");
@@ -182,7 +189,7 @@ public class Menu implements Validador {
 			return Integer.parseInt(JOptionPane.showInputDialog(menu));
 		} catch (NumberFormatException e) {
 			System.out.println("Formato informado invalido - montaMenu()");
-		}	
+		}
 		return 0;
 	}
 
@@ -196,7 +203,7 @@ public class Menu implements Validador {
 			return Integer.parseInt(JOptionPane.showInputDialog(situacoes));
 		} catch (NumberFormatException e) {
 			System.out.println("Formato informado invalido - montaMenu()");
-		}	
-		return 0;		
+		}
+		return 0;
 	}
 }
