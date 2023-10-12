@@ -46,7 +46,7 @@ public class Socio extends Pessoa {
 		String aux = "";
 		if (dependentes != null) {
 			for (Dependente dependente : dependentes) {
-				aux = dependente.toString() + "\n";
+				aux += dependente.toString() + "\n";
 			}
 		}
 		else {

@@ -1,5 +1,6 @@
 package view;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -14,10 +15,8 @@ public class Menu implements Validador {
 
 	public static void main(String[] args) {
 		try {
-			TreeSet<Dependente> listaDependente = new TreeSet<Dependente>();
-			//LinkedList<Locacao> listaLocacao = new LinkedList<Locacao>();
+			// LinkedList<Locacao> listaLocacao = new LinkedList<Locacao>();
 			ListaGenerica<Locacao> listaGenLocacao = new ListaGenerica<Locacao>();
-			ListaGenerica<Dependente> listaGenDependente = new ListaGenerica<Dependente>();
 			ListaGenerica<Socio> listaSocioAux = new ListaGenerica<Socio>();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			Menu menu = new Menu();
@@ -50,8 +49,8 @@ public class Menu implements Validador {
 							socio = socioAux;
 							socioEncontrado = true;
 						}
-					} 
-					if(!socioEncontrado) {
+					}
+					if (!socioEncontrado) {
 						JOptionPane.showMessageDialog(null,
 								"Socio nao cadastrado! Cadastre um socio no Menu para registrar uma locacao");
 						break;
@@ -63,22 +62,24 @@ public class Menu implements Validador {
 							situacaoRetornada = situacao;
 						}
 					}
-					listaGenLocacao.adicionar(new Locacao(dataRetirada, dataDevolucao, valor, titulo,
-							socio, situacaoRetornada));
+					listaGenLocacao.adicionar(
+							new Locacao(dataRetirada, dataDevolucao, valor, titulo, socio, situacaoRetornada));
 					break;
 				case 2:// Pesquisar Locacao por valor
-					double valorPesq = Double.parseDouble(JOptionPane.showInputDialog("Informe o valor (0.00) da locacao que deseja pesquisar: "));
-					locacao = new Locacao();
-					locacao.setValor(valorPesq);
-					/*if (listaGenLocacao.buscaElemento(locacao)) {
-						System.out.println("locacao encontrada");
-						//recuperar o objeto
-						System.out.println(locacao.toString());
-						
+					double valorPesq = Double.parseDouble(
+							JOptionPane.showInputDialog("Informe o valor (0.00) da locacao que deseja pesquisar: "));
+					
+					boolean locacaoEncontrada = false;
+					for (Locacao locacaoBusca : listaGenLocacao.listAll()) {
+						if (locacaoBusca != null && locacaoBusca.getValor() == valorPesq) {
+							JOptionPane.showMessageDialog(null, locacaoBusca.toString());
+							locacaoEncontrada = true;
+						}
 					}
-					else {
-						System.out.println("locacao nao encontrada");
-					}*/
+					if (!locacaoEncontrada) {
+						JOptionPane.showMessageDialog(null, "Locacao nao encontrada");
+					}
+
 					break;
 				case 3:// Cadastrar Socio
 					String nomeSocio = JOptionPane.showInputDialog("Informe o nome do Socio: ");
@@ -86,7 +87,8 @@ public class Menu implements Validador {
 							.parse(JOptionPane.showInputDialog("Informe a data de nascimento do Socio (dd/MM/yyyy): "));
 					String enderecoSocio = JOptionPane.showInputDialog("Informe o endereco do Socio: ");
 					String emailSocio = JOptionPane.showInputDialog("Informe o email do Socio: ");
-
+					
+					TreeSet<Dependente> listaDependente = new TreeSet<Dependente>();
 					if (JOptionPane.showConfirmDialog(null, "Socio tem dependente(s)?", "",
 							JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 						boolean temDepend = true;
@@ -107,59 +109,94 @@ public class Menu implements Validador {
 						JOptionPane.showMessageDialog(null, "Erro ao inserir Socio!");
 					else
 						JOptionPane.showMessageDialog(null, "Socio inserido com sucesso!");
-						listaSocioAux.adicionar(socio);
+					listaSocioAux.adicionar(socio);
 					break;
 				case 4:// Pesquisar Socio Nome
 					socio = new Socio();
 					String nomeSocioPesq = JOptionPane
 							.showInputDialog("Informe o nome do Socio que deseja pesquisar: ");
 					socio.setNome(nomeSocioPesq);
-					if (socio.selectNome() != null) {					
-						JOptionPane.showMessageDialog(null, socio.selectNome());
+					if (socio.selectNome() != null) {
+						socio = socio.selectNome();
+						for (Socio socioListaAux : listaSocioAux.listAll()) {
+							if (socio.getNome().equalsIgnoreCase(socioListaAux.getNome()) && socioListaAux.getDependente() != null) {
+								socio = socioListaAux;
+							}
+						}
+						JOptionPane.showMessageDialog(null, socio.toString());
 					} else {
 						JOptionPane.showMessageDialog(null, "Socio nao encontrado");
 					}
 					break;
 				case 5:// Listar Locacoes
 					if (!listaGenLocacao.listaTodos().isEmpty()) {
-						JOptionPane.showMessageDialog(null, listaGenLocacao.listaTodos());
+						for (Locacao locacaoBusca : listaGenLocacao.listAll()) {
+							JOptionPane.showMessageDialog(null, locacaoBusca.toString());
+						}						
 					} else {
 						JOptionPane.showMessageDialog(null, "Nao ha locacoes cadastradas. Insira na opcao 1 do Menu");
 					}
 					break;
 				case 6:// Listar Socios
-					//socio = new Socio();
+					boolean temSocio = false;
 					for (Socio socioSelect : Socio.selectAll())
 						if (socioSelect != null) {
+							for (Socio socioListaAux : listaSocioAux.listAll()) {
+								if (socioSelect.getNome().equalsIgnoreCase(socioListaAux.getNome()) && socioListaAux.getDependente() != null) {
+									socioSelect.setDependente(socioListaAux.getDependente());
+								}
+							}
 							JOptionPane.showMessageDialog(null, socioSelect.toString());
+							temSocio = true;
 						}
+					if (!temSocio) {
+						JOptionPane.showMessageDialog(null, "Nao ha socios cadastrados. Insira na opcao 3 do Menu");
+					}
 					break;
 				case 7:// Sair
 					System.exit(0);
 					break;
+				default:
+					System.exit(0);
+					break;
 				}
 			}
+		} catch(NullPointerException e) {
+			System.out.println("Parametro nulo");
+		} catch (ParseException e) {
+			System.out.println("Nao foi possivel converter o valor para uma string");
+		} catch (NumberFormatException e) {
+			System.out.println("Formato informado invalido");
 		} catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
 		}
 	}
 
 	public static int montaMenu() {
-		String menu = "";
-		menu += ("Escolha uma das seguintes opcoes:\n");
-		for (OpcoesMenu value : OpcoesMenu.values()) {
-			menu += value.getItem() + "\n";
-		}
-		return Integer.parseInt(JOptionPane.showInputDialog(menu));
+		try {
+			String menu = "";
+			menu += ("Escolha uma das seguintes opcoes:\n");
+			for (OpcoesMenu value : OpcoesMenu.values()) {
+				menu += value.getItem() + "\n";
+			}
+			return Integer.parseInt(JOptionPane.showInputDialog(menu));
+		} catch (NumberFormatException e) {
+			System.out.println("Formato informado invalido - montaMenu()");
+		}	
+		return 0;
 	}
 
 	public static int exibeSituacao() {
-		String situacoes = "";
-		situacoes += ("Escolha a situacao:\n");
-		for (Situacao value : Situacao.values()) {
-			situacoes += value.getItem() + "\n";
-		}
-		return Integer.parseInt(JOptionPane.showInputDialog(situacoes));
+		try {
+			String situacoes = "";
+			situacoes += ("Escolha a situacao:\n");
+			for (Situacao value : Situacao.values()) {
+				situacoes += value.getItem() + "\n";
+			}
+			return Integer.parseInt(JOptionPane.showInputDialog(situacoes));
+		} catch (NumberFormatException e) {
+			System.out.println("Formato informado invalido - montaMenu()");
+		}	
+		return 0;		
 	}
 }

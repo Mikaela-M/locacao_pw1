@@ -84,10 +84,10 @@ public class Locacao implements Comparable<Locacao> {
 		return "== Locacao ==" + 
 				"\nData Retirada: " + dataRetirada +
 				"\nData Devolucao: " + dataDevolucao + 
-				"\nValor: " + valor + 
+				"\nValor: R$" + valor + 
 				"\nTitulo: " + titulo +
 				"\n" + auxSocio + 
-				"\n Situcao: " + situacao.getDescricao();
+				"\nSitucao: " + situacao.getDescricao();
 	}
 
 	@Override

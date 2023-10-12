@@ -12,7 +12,7 @@ public interface Validador {
 			//se data1 (retirada) for depois da data2 (devolucao) retorna falso
 			return false;
 		}
-		//Ver outras validacoes
+
 		return true;
 	}
 	

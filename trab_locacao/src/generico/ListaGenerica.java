@@ -10,6 +10,8 @@ public class ListaGenerica<E> implements ListaGenericaInterface<E> {
 	public void adicionar(E obj) {
 		try {
 			listaDados.add(obj);
+		} catch (UnsupportedOperationException e) {
+			System.out.println("Operacao nao suportada para a lista - adicionar()");
 		} catch (NullPointerException e) {
 			System.out.println("Parametro nulo - adicionar()");
 		} catch (ClassCastException e) {
