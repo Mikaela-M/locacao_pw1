@@ -10,7 +10,7 @@ import generico.ListaGenerica;
 import pessoa.*;
 import locacoes.*;
 import util.*;
-
+//Autora: Mikaela da Silva Machado
 public class Menu implements Validador {
 
 	public static void main(String[] args) {
